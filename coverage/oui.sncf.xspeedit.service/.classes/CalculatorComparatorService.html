@@ -1,0 +1,77 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CalculatorComparatorService</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">oui.sncf.xspeedit.service</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CalculatorComparatorService (oui.sncf.xspeedit.service)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">CalculatorComparatorService$MockitoMock$1331669160</td>
+  </tr>
+  <tr>
+    <td class="name">CalculatorComparatorService$MockitoMock$1331669160$auxiliary$9MJuF3EW</td>
+  </tr>
+  <tr>
+    <td class="name">CalculatorComparatorService$MockitoMock$1331669160$auxiliary$nB82RP65</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package oui.sncf.xspeedit.service;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import oui.sncf.xspeedit.entity.CalculatorComparator;
+<i>4</i>&nbsp;import oui.sncf.xspeedit.exception.XspeedItException;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;public interface CalculatorComparatorService {
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;    /**
+<i>9</i>&nbsp;     * Permet de comparer les performances de CalculatorActual et CalculatorOptimized pour les mêmes articles, en
+<i>10</i>&nbsp;     *  précisant le délimiteur entre les articles, la capacité des cartons ainsi que le délimiteur entre les cartons.
+<i>11</i>&nbsp;     *
+<i>12</i>&nbsp;     * @param items
+<i>13</i>&nbsp;     * @param itemsRegexDelimiter
+<i>14</i>&nbsp;     * @param boxesDelimiter
+<i>15</i>&nbsp;     * @param boxesCapacity
+<i>16</i>&nbsp;     * @return
+<i>17</i>&nbsp;     * @throws XspeedItException
+<i>18</i>&nbsp;     */
+<i>19</i>&nbsp;    CalculatorComparator compareCalculator(String items, String itemsRegexDelimiter, String boxesDelimiter,
+<i>20</i>&nbsp;                                           Integer boxesCapacity) throws XspeedItException;
+<i>21</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-06-17 10:26</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,162 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CalculatorOptimizedServiceImpl</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">oui.sncf.xspeedit.service</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CalculatorOptimizedServiceImpl (oui.sncf.xspeedit.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CalculatorOptimizedServiceImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (35/ 35)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package oui.sncf.xspeedit.service;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import org.slf4j.Logger;
+<i>4</i>&nbsp;import org.slf4j.LoggerFactory;
+<i>5</i>&nbsp;import org.springframework.stereotype.Service;
+<i>6</i>&nbsp;import oui.sncf.xspeedit.exception.XspeedItException;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import java.util.*;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;@Service(&quot;calculatorOptimizedService&quot;)
+<b class="fc"><i>11</i>&nbsp;public class CalculatorOptimizedServiceImpl implements CalculatorService {</b>
+<i>12</i>&nbsp;
+<b class="fc"><i>13</i>&nbsp;    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());</b>
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    @Override
+<i>16</i>&nbsp;    public String organizeTheBoxes(String items, String itemsRegexDelimiter, String boxesDelimiter, Integer boxesCapacity) throws XspeedItException {
+<b class="fc"><i>17</i>&nbsp;        LOGGER.debug(&quot;Organisation des boxes pour les articles suivants : &quot; + items);</b>
+<i>18</i>&nbsp;
+<b class="fc"><i>19</i>&nbsp;        String boxes = &quot;&quot;;</b>
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;        // Vérification préalable au traitement
+<b class="fc"><i>22</i>&nbsp;        if(items == null || &quot;&quot;.equals(items)) {</b>
+<b class="fc"><i>23</i>&nbsp;            return &quot;&quot;;</b>
+<i>24</i>&nbsp;        }
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;        // Ajout des articles dans une Map triée de type &lt;item, recurrence&gt;
+<b class="fc"><i>27</i>&nbsp;        Map&lt;Integer, Integer&gt; itemMap = new TreeMap&lt;&gt;(Collections.reverseOrder());</b>
+<b class="fc"><i>28</i>&nbsp;        for(String letter : items.split(itemsRegexDelimiter)) {</b>
+<i>29</i>&nbsp;            try { // Vérification que les articles soient bien sous la forme d&#39;une liste d&#39;entiers
+<b class="fc"><i>30</i>&nbsp;                Integer item = Integer.parseInt(letter);</b>
+<i>31</i>&nbsp;                // Vérification que l&#39;article n&#39;est pas plus gros que la capacité d&#39;un carton
+<b class="fc"><i>32</i>&nbsp;                if(item &gt; boxesCapacity) {</b>
+<b class="fc"><i>33</i>&nbsp;                    throw new XspeedItException(&quot;Un article ne passe pas dans un carton, même vide.&quot;);</b>
+<i>34</i>&nbsp;                }
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;                // Ajout de l&#39;article dans itemMap (en incrémentant les récurrences)
+<b class="fc"><i>37</i>&nbsp;                itemMap.merge(item, 1, Integer::sum);</b>
+<b class="fc"><i>38</i>&nbsp;            } catch(NumberFormatException e) {</b>
+<b class="fc"><i>39</i>&nbsp;                throw new XspeedItException(&quot;Les articles ne sont pas au bon format.&quot;, e.getStackTrace());</b>
+<b class="fc"><i>40</i>&nbsp;            }</b>
+<i>41</i>&nbsp;        }
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;        // Parcourt de la Map ...
+<b class="fc"><i>44</i>&nbsp;        for(Map.Entry&lt;Integer, Integer&gt; entry : itemMap.entrySet()) {</b>
+<i>45</i>&nbsp;            // ... sans oublier les récurrences
+<b class="fc"><i>46</i>&nbsp;            while(entry.getValue() &gt; 0) {</b>
+<i>47</i>&nbsp;                // Nouveau carton
+<b class="fc"><i>48</i>&nbsp;                Integer remainingCapacity = boxesCapacity - entry.getKey();</b>
+<b class="fc"><i>49</i>&nbsp;                boxes += &quot;&quot;.equals(boxes) ? &quot;&quot; : boxesDelimiter;</b>
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;                // Ajout de l&#39;article dans le carton courant
+<b class="fc"><i>52</i>&nbsp;                itemMap.merge(entry.getKey(), -1, Integer::sum);</b>
+<b class="fc"><i>53</i>&nbsp;                boxes += entry.getKey();</b>
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;                // Tentative de trouver des articles pouvant s&#39;ajouter à celui-ci
+<b class="fc"><i>56</i>&nbsp;                for(Map.Entry&lt;Integer, Integer&gt; entry2 : itemMap.entrySet()) {</b>
+<b class="fc"><i>57</i>&nbsp;                    Boolean keepGoing = Boolean.TRUE;</b>
+<i>58</i>&nbsp;                    do { // Boucler sur les récurrences
+<b class="fc"><i>59</i>&nbsp;                        if(entry2.getValue() &gt; 0 &amp;&amp; remainingCapacity &gt;= entry2.getKey()) {</b>
+<i>60</i>&nbsp;                            // Ajout de l&#39;article dans le carton courant
+<b class="fc"><i>61</i>&nbsp;                            remainingCapacity -= entry2.getKey();</b>
+<b class="fc"><i>62</i>&nbsp;                            itemMap.merge(entry2.getKey(), -1, Integer::sum);</b>
+<b class="fc"><i>63</i>&nbsp;                            boxes += entry2.getKey();</b>
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;                            // Vérification que le carton n&#39;est pas plein
+<b class="fc"><i>66</i>&nbsp;                            if(remainingCapacity == 0) {</b>
+<b class="fc"><i>67</i>&nbsp;                                break;</b>
+<i>68</i>&nbsp;                            }
+<i>69</i>&nbsp;                        } else {
+<i>70</i>&nbsp;                            // Si l&#39;article n&#39;a pas la capacité pour entrer dans le carton, on ne continue pas pour ses récurrences
+<b class="fc"><i>71</i>&nbsp;                            keepGoing = Boolean.FALSE;</b>
+<i>72</i>&nbsp;                        }
+<b class="fc"><i>73</i>&nbsp;                    } while (keepGoing);</b>
+<b class="fc"><i>74</i>&nbsp;                }</b>
+<b class="fc"><i>75</i>&nbsp;            }</b>
+<b class="fc"><i>76</i>&nbsp;        }</b>
+<b class="fc"><i>77</i>&nbsp;        return boxes;</b>
+<i>78</i>&nbsp;    }
+<i>79</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-06-17 10:26</div>
+</div>
+</body>
+</html>
