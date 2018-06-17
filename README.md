@@ -48,13 +48,13 @@ Après différents ateliers fonctionnels, il a été entendu avec XspeedIt le d�
 - d'un calculateur optimisé
 - d'un comparateur entre ces deux calculateurs
 
-Lors de ces échanges, il a été mise en avant le fait que certaines conditions de traitement pouvaient être amenées à changer.
+Lors de ces échanges, il a été mis en avant le fait que certaines conditions de traitement pouvaient être amenées à changer.
 Ainsi, la possibilité de changer les options suivantes a été mise en place :
 - le délimiteur entre les articles (initialement chaque article correspondant à un chiffre)
 - la capacité des cartons (initialement 10)
 - le délimiteur entre les cartons (initialement le caractère /)
 
-Afin de pouvoir tester rapidement les différentes fonctionnalités avec les conditions exprimées initialement, la société a souhaité différencié les fonctionnalités initiales et génériques.
+Afin de pouvoir tester rapidement les différentes fonctionnalités avec les conditions exprimées initialement, la société a souhaité différencié les fonctionnalités sans condition des fonctionnalités génériques.
 Les 6 endpoints suivants ont donc été mis en place :
 - /api/calculator/actual/organizeTheBoxes
 - /api/calculator/actual/organizeTheBoxesGeneric
@@ -69,7 +69,7 @@ Cette interface est disponible via l'URL suivante : http://localhost:8080/swagge
 
 Déploiement
 -----------
-Les commandes qui suivent explicitent les différentes façon de lancer l'application.
+Les commandes qui suivent explicitent les différentes façons de lancer l'application.
 
 *Déploiement avec le plugin Maven Spring Boot :*
 ```python
@@ -89,24 +89,24 @@ Notes techniques
 Afin de réaliser une API facilement déployable, le framework Spring Boot a été choisi.
 La dépendance ```spring-boot-starter-web```  met en place une stack technique permettant l'implémentation d'une API de façon rapide et simple.
 Afin de générer une documentation de cette API, la librairie Swagger a été utilisée. Elle permet également de pouvoir tester chaque endpoint.
-Enfin, les tests ont été écrits via l'utilisation de la dépendance ```spring-boot-starter-test```. Celle-ci permet notamment l'utilisation des librairies JUnit et Mockito.
+Enfin, les tests ont été écrits via l'utilisation de la dépendance ```spring-boot-starter-test```. Celle-ci permet notamment l'utilisation, sans configuration supplémentaire, des librairies JUnit et Mockito.
 
 ##### Architecture générale
 Les différentes couches applicatives sont réparties dans les packages suivants :
 - configuration : regroupe toutes les configurations liées à l'application (ici, il n'y a que la config liée à Swagger)
 - controller : regroupe les différents controllers mis en place par l'API (tous les endpoints sont ici)
-- entity : regroupe les entités de l'application (ici, il n'y a que la classe CalculatorComparator qui est utilisé pour le récapitulatif du comparateur)
+- entity : regroupe les entités de l'application (ici, il n'y a que la classe CalculatorComparator qui est utilisée pour le récapitulatif du comparateur)
 - exception : regroupe les exceptions de l'application (ici, une seule exception globale : XspeedItException)
-- service : regroupe les servies (interfaces et implémentation) de l'application
-- utils : regroupe les constantes et autres méthodes statiques sans état
+- service : regroupe les servies (interfaces et implémentations) de l'application
+- utils : regroupe les constantes et autres méthodes statiques (sans état)
 
 ##### Architecture détaillée concernant le calculateur optimisé
-Pour calculer la répartition idéale d'articles dans des cartons afin de les remplir au maximum, l'algorithme qui a été implémentée est le suivant :
+Pour calculer la répartition idéale d'articles dans des cartons dans le but de les remplir au maximum, l'algorithme qui a été implémentée est le suivant :
 1. tri des carticles suivant leur contenance (du plus gros article au plus petit)
 2. ajout des articles dans un carton en commençant par le plus gros, jusqu'à :
 - remplir ce carton
 - ou qu'il n'y ait plus d'articles plus petit pouvant être ajouté
-3. et ainsi de suite
+3. et ainsi de suite jusqu'à ce qu'il n'y ait plus d'articles
 
 Afin d'optimiser le temps de traitement, les articles sont initialisés dans une Map avec pour clé leur contenance et pour valeur leur récurrence.
 Par exemple, la liste d'article 58744818 sera triée et répartie de cette façon :
@@ -128,4 +128,4 @@ Note : les packages entity et exception ne présentant aucun intérêt à être 
 Chaque service possède sa classe de tests asssociée. Par exemple, les tests de CalculatorComparatorService sont définis dans la classe de tests CalculatorComparatorServiceTU.
 Il en est de même pour les packages service et utils.
 
-Tous les tests mis en place sont des tests de type unitaires. Ainsi, les différents appels vers d'autres services ont été "mockés" (bouchonnés) via la librairie Mockito.
+Tous les tests mis en place sont des tests de type unitaire. Ainsi, les appels vers d'autres services sont "mockés" (bouchonnés) via la librairie Mockito.
